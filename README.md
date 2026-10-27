@@ -6,7 +6,7 @@ A syllabus-faithful educational website covering five MTech Semester I courses. 
 
 - [MCSC-105 - Discrete Mathematics and Graph Theory](./discrete-mathematics-and-graph-theory/) - 4 credits
 - [MCSC-103 - Advanced Computer Networks and Communication](./advanced-computer-networks-and-communication/) - 4 credits
-- [MCSC-202 - Probability and Statistics](./probability-and-statistics/) - 3 credits
+- [MCSC-202 - Probability and Statistics](./probability-and-statistics/) - credit not stated
 - [MCSC-106 - Pattern Recognition](./pattern-recognition/) - 3 credits
 - [MCSC-201 - Research Methodology](./research-methodology/) - 3 credits
 

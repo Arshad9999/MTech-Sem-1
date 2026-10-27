@@ -1,6 +1,6 @@
 # MCSC-202 - Probability and Statistics
 
-**Credits:** 3
+**Credits:** Not stated in the supplied syllabus
 
 Model uncertainty, simulate systems, and make defensible statistical inferences from data.
 

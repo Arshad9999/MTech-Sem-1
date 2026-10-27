@@ -5,7 +5,8 @@ ROOT=Path(__file__).resolve().parents[1]
 DATA=json.loads((ROOT/'assets/course-data.json').read_text())['courses']
 
 def readme(c):
-    lines=[f"# {c['code']} - {c['title']}","",f"**Credits:** {c['credits']}","",c['tagline'],"","> This guide expands only the topics named in the supplied syllabus. Confirm assessment rules and recommended readings with your institution.","","## Course map",""]
+    credit_value=str(c['credits']) if isinstance(c['credits'],int) else "Not stated in the supplied syllabus"
+    lines=[f"# {c['code']} - {c['title']}","",f"**Credits:** {credit_value}","",c['tagline'],"","> This guide expands only the topics named in the supplied syllabus. Confirm assessment rules and recommended readings with your institution.","","## Course map",""]
     for i,m in enumerate(c['modules'],1): lines.append(f"{i}. **{m['title']}** - "+", ".join(m['topics']))
     lines += ["","## Learning notes",""]
     for i,m in enumerate(c['modules'],1):
@@ -20,6 +21,8 @@ for c in DATA:
     (p/'index.html').write_text(html.format(slug=c['slug']))
 
 root=["# MTech Semester I - Learning Portal","","A syllabus-faithful educational website covering five MTech Semester I courses. Every course directory contains a dedicated webpage, detailed README, concept diagram, worked examples, equations, revision checkpoints, and printable PDF.","","## Courses",""]
-for c in DATA: root.append(f"- [{c['code']} - {c['title']}](./{c['slug']}/) - {c['credits']} credits")
+for c in DATA:
+    credit_label=f"{c['credits']} credits" if isinstance(c['credits'],int) else "credit not stated"
+    root.append(f"- [{c['code']} - {c['title']}](./{c['slug']}/) - {credit_label}")
 root += ["","## Run locally","","```bash","python3 -m http.server 8000","```","","Open `http://localhost:8000`. A web server is required because the pages load the shared course data with `fetch`.","","## Repository structure","","```text",".","├── index.html","├── assets/","├── discrete-mathematics-and-graph-theory/","├── advanced-computer-networks-and-communication/","├── probability-and-statistics/","├── pattern-recognition/","└── research-methodology/","```","","## Validation","","Run `python3 scripts/validate.py`. It checks course counts, required files, internal links, PDF page counts, and README topic coverage.","","## Academic scope","","The content is derived from the supplied syllabus. It deliberately avoids invented unit numbering, assessment schemes, learning outcomes, or institutional rules. Examples are instructional illustrations, not additional syllabus requirements.","","## License","","Educational content and source code are available under the MIT License unless a referenced asset states otherwise.",""]
 (ROOT/'README.md').write_text("\n".join(root))
