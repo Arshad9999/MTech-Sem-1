@@ -13,4 +13,8 @@
 .practice-list{display:grid;gap:.6rem}.practice-list summary{display:flex;gap:.7rem}.practice-list summary span{color:var(--accent);min-width:2rem}
 .application-grid article{position:relative;overflow:hidden}.app-number{position:absolute;right:.5rem;top:-1.2rem;font-size:5rem;font-weight:900;color:var(--soft);z-index:0}.application-grid h3,.application-grid p{position:relative;z-index:1}
 .completion-note{margin-top:1.2rem;background:var(--soft);border:1px solid color-mix(in srgb,var(--accent) 35%,white);padding:1rem;border-radius:.9rem}.completion-note strong{color:var(--accent)}.completion-note p{margin:.35rem 0 0}
+.lesson-visual{margin:1.5rem 0 .2rem;border:1px solid var(--line);border-radius:1.15rem;overflow:hidden;background:#fff;box-shadow:0 16px 38px rgba(15,23,42,.09)}
+.lesson-visual img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;background:#fff}
+.lesson-visual figcaption{display:grid;gap:.22rem;padding:1rem 1.1rem;border-top:1px solid var(--line);background:linear-gradient(135deg,var(--soft),#fff)}
+.lesson-visual figcaption strong{color:var(--accent);font-size:1rem}.lesson-visual figcaption span{color:var(--muted);font-size:.92rem;line-height:1.55}
 @media(max-width:760px){.objective-grid,.accordion-grid,.type-grid,.formula-grid,.pitfall-list,.application-grid{grid-template-columns:1fr}.mastery-intro,.reference-section{padding:1.1rem}.comparison-card table{font-size:.88rem}}

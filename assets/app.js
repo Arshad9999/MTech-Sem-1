@@ -54,8 +54,14 @@ function mastery(supplement) {
   <section class="reference-section" id="applications"><div class="section-kicker">08 · Application</div><h2>Applied exercises</h2><div class="application-grid">${supplement.applications.map((item,index) => `<article><div class="app-number">0${index + 1}</div><h3>${esc(item[0])}</h3><p>${esc(item[1])}</p></article>`).join('')}</div><div class="completion-note"><strong>Independent study checkpoint</strong><p>Work through the study blocks, reproduce the formula sheet, answer the practice prompts without hints, and finish at least one applied exercise before moving to assessment-focused revision. Use this portal alongside instructor materials and prescribed readings.</p></div></section>`;
 }
 
-function lesson(module, index) {
-  return `<section class="module" id="m${index + 1}"><div class="eyebrow">Study block ${String(index + 1).padStart(2,'0')}</div><h2>${esc(module.title)}</h2><div class="topic-list">${module.topics.map(topic => `<span>${esc(topic)}</span>`).join('')}</div><p>${esc(module.definition)}</p><div class="equation" role="math">${esc(module.equation)}</div><div class="worked"><strong>Worked example</strong><br>${esc(module.example)}</div><p class="check">✓ Must understand: ${esc(module.checkpoint)}</p></section>`;
+function lessonVisual(visual) {
+  if (!visual) return '';
+  return `<figure class="lesson-visual"><img src="${esc(visual.src)}" alt="${esc(visual.alt)}" loading="lazy" decoding="async"><figcaption><strong>${esc(visual.title)}</strong><span>${esc(visual.caption)}</span></figcaption></figure>`;
+}
+
+function lesson(module, index, visuals) {
+  const visual = visuals.find(item => item.afterModule === index + 1);
+  return `<section class="module" id="m${index + 1}"><div class="eyebrow">Study block ${String(index + 1).padStart(2,'0')}</div><h2>${esc(module.title)}</h2><div class="topic-list">${module.topics.map(topic => `<span>${esc(topic)}</span>`).join('')}</div><p>${esc(module.definition)}</p><div class="equation" role="math">${esc(module.equation)}</div><div class="worked"><strong>Worked example</strong><br>${esc(module.example)}</div><p class="check">✓ Must understand: ${esc(module.checkpoint)}</p>${lessonVisual(visual)}</section>`;
 }
 
 async function course() {
@@ -70,7 +76,7 @@ async function course() {
   $('#nav').innerHTML = nav('../');
   $('#courseHero').innerHTML = `<div><div class="eyebrow">${selected.code} · ${credit(selected)}</div><h1>${esc(selected.title)}</h1><p class="lede">${esc(selected.tagline)}</p><div class="downloads"><a href="#m1">Start learning</a><a href="#mastery">Mastery hub</a><a href="${selected.code}-${selected.slug}.pdf">PDF handbook</a><a href="../index.html#courses">All courses</a></div></div><div class="hero-art"><img src="../assets/${selected.diagram}" alt="Concept diagram for ${esc(selected.title)}"></div>`;
   $('#toc').innerHTML = '<strong>Course lessons</strong>' + selected.modules.map((module,index) => `<a href="#m${index + 1}">${index + 1}. ${esc(module.title)}</a>`).join('') + '<strong class="toc-group">Mastery hub</strong><a href="#glossary">Definitions</a><a href="#types">Types</a><a href="#formulas">Formula sheet</a><a href="#comparisons">Difference tables</a><a href="#practice">Practice</a><a href="#applications">Applied work</a>';
-  $('#modules').innerHTML = selected.modules.map(lesson).join('') + mastery(supplement);
+  $('#modules').innerHTML = selected.modules.map((module, index) => lesson(module, index, supplement.visuals || [])).join('') + mastery(supplement);
   $('#foot').innerHTML = foot();
   if (location.hash) setTimeout(() => document.querySelector(location.hash)?.scrollIntoView(), 80);
 }

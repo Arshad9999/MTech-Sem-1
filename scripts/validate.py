@@ -21,9 +21,13 @@ for c in data:
     guide=supplements.get(c['slug'])
     if not guide: errors.append(f"Missing mastery guide: {c['slug']}")
     else:
-        minimums={'objectives':5,'glossary':10,'types':8,'formulas':8,'comparisons':2,'pitfalls':8,'practice':8,'applications':3}
+        minimums={'objectives':5,'glossary':10,'types':8,'formulas':8,'comparisons':2,'pitfalls':8,'practice':8,'applications':3,'visuals':4}
         for key,minimum in minimums.items():
             if len(guide.get(key,[])) < minimum: errors.append(f"{c['code']} mastery section '{key}' has fewer than {minimum} entries")
+        for visual in guide.get('visuals',[]):
+            image=(d/visual.get('src','')).resolve()
+            if not image.exists() or image.stat().st_size==0: errors.append(f"Missing or empty course visual: {visual.get('src','(missing src)')}")
+            if visual.get('afterModule') not in range(1,len(c['modules'])+1): errors.append(f"Invalid visual placement in {c['code']}: {visual.get('afterModule')}")
 for html in ROOT.rglob('*.html'):
     text=html.read_text()
     for ref in re.findall(r'(?:href|src)="([^"]+)"',text):
@@ -32,4 +36,4 @@ for html in ROOT.rglob('*.html'):
         if not target.exists(): errors.append(f'Broken link in {html.relative_to(ROOT)}: {ref}')
 if errors:
     print('\n'.join('ERROR: '+e for e in errors));sys.exit(1)
-print(f'Validated {len(data)} courses, {sum(len(c["modules"]) for c in data)} study blocks, 8 mastery sections per course, all required files, topic coverage, PDF lengths, and local links.')
+print(f'Validated {len(data)} courses, {sum(len(c["modules"]) for c in data)} study blocks, 4 text mind maps per course, 8 mastery sections per course, all required files, topic coverage, PDF lengths, and local links.')
