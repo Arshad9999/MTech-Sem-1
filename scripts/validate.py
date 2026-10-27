@@ -3,6 +3,7 @@ from pathlib import Path
 from pypdf import PdfReader
 ROOT=Path(__file__).resolve().parents[1]
 data=json.loads((ROOT/'assets/course-data.json').read_text())['courses']
+supplements=json.loads((ROOT/'assets/course-supplements.json').read_text())
 errors=[]
 if len(data)!=5: errors.append(f'Expected 5 courses, found {len(data)}')
 for c in data:
@@ -17,6 +18,12 @@ for c in data:
     if pdf.exists():
         pages=len(PdfReader(str(pdf)).pages)
         if pages < len(c['modules'])+2: errors.append(f'{pdf.name} too short: {pages} pages')
+    guide=supplements.get(c['slug'])
+    if not guide: errors.append(f"Missing mastery guide: {c['slug']}")
+    else:
+        minimums={'objectives':5,'glossary':10,'types':8,'formulas':8,'comparisons':2,'pitfalls':8,'practice':8,'applications':3}
+        for key,minimum in minimums.items():
+            if len(guide.get(key,[])) < minimum: errors.append(f"{c['code']} mastery section '{key}' has fewer than {minimum} entries")
 for html in ROOT.rglob('*.html'):
     text=html.read_text()
     for ref in re.findall(r'(?:href|src)="([^"]+)"',text):
@@ -25,4 +32,4 @@ for html in ROOT.rglob('*.html'):
         if not target.exists(): errors.append(f'Broken link in {html.relative_to(ROOT)}: {ref}')
 if errors:
     print('\n'.join('ERROR: '+e for e in errors));sys.exit(1)
-print(f'Validated {len(data)} courses, {sum(len(c["modules"]) for c in data)} study blocks, all required files, topic coverage, PDF lengths, and local links.')
+print(f'Validated {len(data)} courses, {sum(len(c["modules"]) for c in data)} study blocks, 8 mastery sections per course, all required files, topic coverage, PDF lengths, and local links.')

@@ -2,6 +2,10 @@
 
 A syllabus-faithful educational website covering five MTech Semester I courses. Every course directory contains a dedicated webpage, detailed README, concept diagram, worked examples, equations, revision checkpoints, and printable PDF.
 
+## Deep-learning features
+
+Each course webpage includes eight mastery sections: learning objectives, an expandable glossary, syllabus-relevant type classifications, a formula and relationship sheet, comparison tables, common mistakes, practice questions with progressive hints, and applied exercises.
+
 ## Courses
 
 - [MCSC-105 - Discrete Mathematics and Graph Theory](./discrete-mathematics-and-graph-theory/) - 4 credits
