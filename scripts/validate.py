@@ -28,7 +28,7 @@ for html in ROOT.rglob('*.html'):
     text=html.read_text()
     for ref in re.findall(r'(?:href|src)="([^"]+)"',text):
         if ref.startswith(('http:','https:','#')): continue
-        target=(html.parent/ref.split('#')[0]).resolve()
+        target=(html.parent/re.split(r'[?#]',ref)[0]).resolve()
         if not target.exists(): errors.append(f'Broken link in {html.relative_to(ROOT)}: {ref}')
 if errors:
     print('\n'.join('ERROR: '+e for e in errors));sys.exit(1)
